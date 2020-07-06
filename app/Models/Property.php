@@ -1,17 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'properties';
+    protected $guarded = [
+        ''
+    ];
 
-    protected $timestamps = false;
+    public function setCreatedAtAttribute($value)
+    {
+        $this->attributes['created_at'] = $value;
+        $this->attributes['guid'] = (string) Str::orderedUuid();
+    }
 }
