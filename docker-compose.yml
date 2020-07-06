@@ -16,8 +16,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     command: "--max_allowed_packet=1000M --connect_timeout=72"
 
-  web:
-    build: ./etc/apache2
+  web_test:
+    build: /etc/apache2
     restart: always
     depends_on:
       - db_mysql
