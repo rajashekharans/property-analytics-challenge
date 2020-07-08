@@ -16,4 +16,9 @@ class Property extends Model
         $this->attributes['created_at'] = $value;
         $this->attributes['guid'] = (string) Str::orderedUuid();
     }
+
+    public function propertyAnalytics()
+    {
+        return $this->hasMany('App\Models\PropertyAnalytic');
+    }
 }
