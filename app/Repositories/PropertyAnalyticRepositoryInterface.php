@@ -7,5 +7,4 @@ use Illuminate\Support\Collection;
 interface PropertyAnalyticRepositoryInterface
 {
     public function updateOrCreate(array $attributes): Model;
-    public function all(): Collection;
 }

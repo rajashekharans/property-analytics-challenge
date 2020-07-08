@@ -16,5 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('properties', 'PropertyController@addProperty')
     ->name('api.add-property');
-Route::put('properties/{property_id}/property-analytic', 'PropertyController@addUpdatePropertyAnalytic')
+Route::put('properties/{property_id}/property-analytics', 'PropertyController@addUpdatePropertyAnalytics')
+    ->name('api.add-update-property-analytic');
+Route::get('properties/{property_id}/property-analytics', 'PropertyController@getPropertyAnalytics')
     ->name('api.add-update-property-analytic');
