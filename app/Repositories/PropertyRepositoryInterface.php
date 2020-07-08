@@ -7,5 +7,5 @@ use Illuminate\Support\Collection;
 interface PropertyRepositoryInterface
 {
     public function create(array $attributes): Model;
-    public function all(): Collection;
+    public function findPropertyAnalyticsByPropertyId(int $propertyId): Collection;
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\PropertyController;
 use App\Models\PropertyAnalytic;
 use App\Repositories\PropertyRepository;
 use App\Repositories\PropertyAnalyticRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 use Mockery;
@@ -142,7 +143,7 @@ class PropertyControllerTest extends TestCase
         );
 
         $property_id = 1;
-        $response = $controller->addUpdatePropertyAnalytic($requestMock, $property_id);
+        $response = $controller->addUpdatePropertyAnalytics($requestMock, $property_id);
 
 
         $data = json_decode(
@@ -184,7 +185,7 @@ class PropertyControllerTest extends TestCase
         );
 
         $property_id = 1;
-        $response = $controller->addUpdatePropertyAnalytic($requestMock, $property_id);
+        $response = $controller->addUpdatePropertyAnalytics($requestMock, $property_id);
 
 
         $data = json_decode(
@@ -193,5 +194,60 @@ class PropertyControllerTest extends TestCase
         );
 
         $this->assertEquals($expected, $data);
+    }
+
+    public function testGetPropertyAnalyticsByPropertId()
+    {
+        $expected = collect([
+            [
+                'id' => 76,
+                'value' => '29',
+                'created_at' => '2020-07-07T20:38:00.000000Z',
+                'updated_at' => '2020-07-07T20:38:00.000000Z',
+                'property_id' => 76,
+                'analytic_type_id' => 1,
+            ],
+            [
+                'id' => 151,
+                'value' => '301',
+                'created_at' => '2020-07-07T20:38:00.000000Z',
+                'updated_at' => '2020-07-07T20:38:00.000000Z',
+                'property_id' => 76,
+                'analytic_type_id' => 2,
+            ],
+            [
+                'id' => 205,
+                'value' => '2.290435341',
+                'created_at' => '2020-07-07T20:38:00.000000Z',
+                'updated_at' => '2020-07-07T20:38:00.000000Z',
+                'property_id' => 76,
+                'analytic_type_id' => 3,
+            ],
+        ]);
+
+
+        $propertyRepositoryMock = Mockery::mock(PropertyRepository::class);
+        $propertyRepositoryMock->shouldReceive('findPropertyAnalyticsByPropertyId')
+            ->withAnyArgs()
+            ->once()
+            ->andReturn($expected);
+
+        $propertyAnalyticRepositoryMock = Mockery::mock(PropertyAnalyticRepository::class);
+
+        # When
+        $controller = new PropertyController(
+            $propertyRepositoryMock,
+            $propertyAnalyticRepositoryMock
+        );
+        $propertyId = 76;
+        $response = $controller->getPropertyAnalytics($propertyId);
+
+        $data = json_decode(
+            $response->getContent(),
+            true
+        );
+
+        # Assert
+        $this->assertEquals($expected->all(), $data);
     }
 }

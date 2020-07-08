@@ -38,4 +38,28 @@ class PropertyRepositoryTest extends TestCase
 
        $this->assertInstanceOf(Collection::class, $result);
     }
+
+    public function testfindPropertyAnalyticsByPropertyIdMethod()
+    {
+        $propertyModelMock = Mockery::mock(Property::class);
+
+        $propertyModelMock->shouldReceive('find')
+            ->withAnyArgs()
+            ->times(1)
+            ->andReturnSelf();
+        $propertyModelMock->shouldReceive('propertyAnalytics')
+            ->withAnyArgs()
+            ->times(1)
+            ->andReturnSelf();
+        $propertyModelMock->shouldReceive('get')
+            ->withAnyArgs()
+            ->times(1)
+            ->andReturn(new Collection());
+
+        $propertyId = 1;
+        $repository = new PropertyRepository($propertyModelMock);
+        $result = $repository->findPropertyAnalyticsByPropertyId($propertyId);
+
+        $this->assertInstanceOf(Collection::class, $result);
+    }
 }

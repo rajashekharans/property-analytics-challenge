@@ -8,30 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class PropertyRepository extends BaseRepository implements PropertyRepositoryInterface
 {
-
-    /**
-     * UserRepository constructor.
-     *
-     * @param Property $model
-     */
     public function __construct(Property $model)
     {
         parent::__construct($model);
     }
 
-    /**
-     * @return Model
-     */
     public function create(array $attributes): Model
     {
         return $this->model->create($attributes);
     }
 
-    /**
-     * @return Collection
-     */
-    public function all(): Collection
+
+    public function findPropertyAnalyticsByPropertyId(int $propertyId): Collection
     {
-        return $this->model->all();
+        return $this->model->find($propertyId)->propertyAnalytics()->get();
     }
 }

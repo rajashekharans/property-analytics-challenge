@@ -41,11 +41,11 @@ class PropertyController extends Controller
         return new JsonResponse($response, Response::HTTP_CREATED);
     }
 
-    public function addUpdatePropertyAnalytic(Request $request, int $property_id)
+    public function addUpdatePropertyAnalytics(Request $request, int $propertyId): JsonResponse
     {
         $data = $request->all();
 
-        $data['property_id'] = $property_id;
+        $data['property_id'] = $propertyId;
 
         $validator = Validator::make($data, [
             'analytic_type_id' => 'required',
@@ -58,6 +58,13 @@ class PropertyController extends Controller
         }
 
         $response = $this->propertyAnalyticRepository->updateOrCreate($data);
+
+        return new JsonResponse($response->toArray(), Response::HTTP_OK);
+    }
+
+    public function getPropertyAnalytics(int $propertyId): JsonResponse
+    {
+        $response = $this->propertyRepository->findPropertyAnalyticsByPropertyId($propertyId);
 
         return new JsonResponse($response->toArray(), Response::HTTP_OK);
     }

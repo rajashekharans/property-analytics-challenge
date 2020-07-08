@@ -59,7 +59,7 @@ class PropertyControllerTest extends TestCase
     public function testAddPropertyAnalyticSuccess()
     {
         $response = $this->putJson(
-            env('APP_URL').'/api/properties/1/property-analytic',
+            env('APP_URL').'/api/properties/1/property-analytics',
             [
                 'analytic_type_id' => 1,
                 'value' => 11
@@ -79,7 +79,7 @@ class PropertyControllerTest extends TestCase
     public function testAddPropertyAnalyticReturnsError()
     {
         $response = $this->putJson(
-            env('APP_URL').'/api/properties/1/property-analytic',
+            env('APP_URL').'/api/properties/1/property-analytics',
             [
                 'value' => 11
             ]
@@ -95,5 +95,21 @@ class PropertyControllerTest extends TestCase
                 ],
             ]
         );
+    }
+
+    public function testGetPropertAnalyticsByPropertyId()
+    {
+        $response = $this->get(
+            env('APP_URL').'/api/properties/12/property-analytics'
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                    [
+                        'property_id' => 12,
+                    ],
+                ]
+            );
     }
 }

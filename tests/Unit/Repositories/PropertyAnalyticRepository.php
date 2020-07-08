@@ -4,13 +4,12 @@ namespace Tests\Unit\Repositories;
 
 use App\Models\PropertyAnalytic;
 use App\Repositories\PropertyAnalyticRepository;
-use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Mockery;
 
 class PropertyAnalyticRepositoryTest extends TestCase
 {
-    public function testUpdateOrCreateMethodForExisitingRecord()
+    public function testUpdateOrCreateMethodForExistingRecord()
     {
         $propertyModelMock = Mockery::mock(PropertyAnalytic::class);
         $propertyModelMock->shouldReceive('update')
@@ -20,11 +19,13 @@ class PropertyAnalyticRepositoryTest extends TestCase
 
         $propertyModelMock->shouldReceive('where')
             ->withAnyArgs()
-            ->times(4);
+            ->times(4)
+            ->andReturnSelf();;
 
         $propertyModelMock->shouldReceive('get')
             ->withAnyArgs()
-            ->times(1);
+            ->times(1)
+            ->andReturnSelf();;
 
         $propertyModelMock->shouldReceive('first')
             ->withAnyArgs()
@@ -32,7 +33,11 @@ class PropertyAnalyticRepositoryTest extends TestCase
             ->andReturnSelf();
 
         $repository = new PropertyAnalyticRepository($propertyModelMock);
-        $result = $repository->updateOrCreate([]);
+        $result = $repository->updateOrCreate([
+            'property_id' => 1,
+            'analytic_type_id' => 1,
+            'value' => '123'
+        ]);
 
         $this->assertInstanceOf(PropertyAnalytic::class, $result);
     }
@@ -43,11 +48,12 @@ class PropertyAnalyticRepositoryTest extends TestCase
         $propertyModelMock->shouldReceive('update')
             ->withAnyArgs()
             ->times(1)
-            ->andReturn(true);
+            ->andReturn(false);
 
         $propertyModelMock->shouldReceive('where')
             ->withAnyArgs()
-            ->times(2);
+            ->times(2)
+            ->andReturnSelf();
 
         $propertyModelMock->shouldReceive('create')
             ->withAnyArgs()
@@ -55,22 +61,12 @@ class PropertyAnalyticRepositoryTest extends TestCase
             ->andReturnSelf();
 
         $repository = new PropertyAnalyticRepository($propertyModelMock);
-        $result = $repository->updateOrCreate([]);
+        $result = $repository->updateOrCreate([
+            'property_id' => 1,
+            'analytic_type_id' => 1,
+            'value' => '123'
+        ]);
 
         $this->assertInstanceOf(PropertyAnalytic::class, $result);
-    }
-
-    public function testAllMethod()
-    {
-        $propertyModelMock = Mockery::mock(PropertyAnalytic::class);
-        $propertyModelMock->shouldReceive('all')
-            ->withAnyArgs()
-            ->times(1)
-            ->andReturns(new Collection());
-
-        $repository = new PropertyAnalyticRepository($propertyModelMock);
-        $result = $repository->all();
-
-        $this->assertInstanceOf(Collection::class, $result);
     }
 }
