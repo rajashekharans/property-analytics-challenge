@@ -14,7 +14,7 @@ class CreatePropertyAnalyticsTable extends Migration
     public function up()
     {
         Schema::create('property_analytics', function (Blueprint $table) {
-            $table->id();
+            $table->id()->unique();
             $table->text('value');
             $table->timestamps();
         });
@@ -22,6 +22,8 @@ class CreatePropertyAnalyticsTable extends Migration
         Schema::table('property_analytics', function (Blueprint $table) {
             $table->foreignId('property_id')->constrained();
             $table->foreignId('analytic_type_id')->constrained();
+            $table->dropPrimary('id');
+            $table->primary(['property_id', 'analytic_type_id']);
         });
     }
 

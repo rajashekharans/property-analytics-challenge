@@ -22,7 +22,8 @@ class PropertyControllerTest extends TestCase
                 'suburb' => 'Sally',
                 'state' => 'TestState',
                 'country' => 'TestCountry'
-            ]);
+            ]
+        );
 
         $response
             ->assertStatus(201)
@@ -30,7 +31,8 @@ class PropertyControllerTest extends TestCase
                 'suburb' => 'Sally',
                 'state' => 'TestState',
                 'country' => 'TestCountry'
-            ]);
+            ]
+        );
     }
 
     public function testAddPropertyReturnsError()
@@ -50,6 +52,48 @@ class PropertyControllerTest extends TestCase
                         'The country field is required.'
                     ],
                 ],
-            ]);
+            ]
+        );
+    }
+
+    public function testAddPropertyAnalyticSuccess()
+    {
+        $response = $this->putJson(
+            env('APP_URL').'/api/properties/1/property-analytic',
+            [
+                'analytic_type_id' => 1,
+                'value' => 11
+            ]
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'property_id' => 1,
+                'analytic_type_id' => 1,
+                'value' => '11'
+            ]
+        );
+    }
+
+    public function testAddPropertyAnalyticReturnsError()
+    {
+        $response = $this->putJson(
+            env('APP_URL').'/api/properties/1/property-analytic',
+            [
+                'value' => 11
+            ]
+        );
+
+        $response
+            ->assertStatus(400)
+            ->assertJson([
+                'response' => [
+                    'analytic_type_id' => [
+                        'The analytic type id field is required.'
+                    ],
+                ],
+            ]
+        );
     }
 }

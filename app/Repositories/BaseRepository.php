@@ -32,6 +32,16 @@ class BaseRepository implements EloquentRepositoryInterface
     }
 
     /**
+     * @param array $attributes
+     *
+     * @return Model
+     */
+    public function updateOrCreate(array $attributes): Model
+    {
+        return $this->model->updateOrCreate($attributes);
+    }
+
+    /**
      * @param $id
      * @return Model
      */
