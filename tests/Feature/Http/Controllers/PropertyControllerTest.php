@@ -1,19 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rushinaidu
- * Date: 7/7/20
- * Time: 6:27 AM
- */
 
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PropertyControllerTest extends TestCase
 {
+
     public function testAddPropertySuccess()
     {
         $response = $this->postJson(
@@ -45,9 +40,9 @@ class PropertyControllerTest extends TestCase
             ]);
 
         $response
-            ->assertStatus(400)
+            ->assertStatus(422)
             ->assertJson([
-                'response' => [
+                'messages' => [
                     'country' => [
                         'The country field is required.'
                     ],
@@ -86,9 +81,9 @@ class PropertyControllerTest extends TestCase
         );
 
         $response
-            ->assertStatus(400)
+            ->assertStatus(422)
             ->assertJson([
-                'response' => [
+                'messages' => [
                     'analytic_type_id' => [
                         'The analytic type id field is required.'
                     ],
@@ -111,5 +106,31 @@ class PropertyControllerTest extends TestCase
                     ],
                 ]
             );
+    }
+
+    public function testGetPropertAnalyticsByStateSuccess()
+    {
+        $response = $this->get(
+            env('APP_URL').'/api/properties/property-analytics?state=NSW&analytic_type_id=3'
+        );
+
+        $response->assertStatus(200);
+    }
+
+    public function testGetPropertAnalyticsByStateError()
+    {
+        $response = $this->get(
+            env('APP_URL').'/api/properties/property-analytics?test=NSW&analytic_type_id=3'
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                'messages' => [
+                    'field' => [
+                        'One of the required field in [suburb, state, country] is missing.'
+                    ],
+                ],
+            ]);
     }
 }

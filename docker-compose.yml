@@ -16,8 +16,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     command: "--max_allowed_packet=1000M --connect_timeout=72"
 
-  web_test:
-    build: /etc/apache2
+  web:
+    container_name: property_web
+    build: ./etc/apache2
     restart: always
     depends_on:
       - db_mysql
@@ -29,6 +30,7 @@ services:
     ports:
       - ${HTTP_PORT}:80
       - ${HTTPS_PORT}:443
+
 
 volumes:
   db_mysql_data:

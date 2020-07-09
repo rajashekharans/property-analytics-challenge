@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\PropertyAnalytic;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class PropertyAnalyticRepository extends BaseRepository implements PropertyAnalyticRepositoryInterface
 {
@@ -27,5 +28,13 @@ class PropertyAnalyticRepository extends BaseRepository implements PropertyAnaly
                     ->first();
         }
         return $this->model->create($attributes);
+    }
+
+    public function getAnalytics(array $propertyIdArray, int $type_id): Collection
+    {
+        return $this->model
+            ->whereIn('property_id', $propertyIdArray)
+            ->where('analytic_type_id', $type_id)
+            ->get();
     }
 }

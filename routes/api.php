@@ -20,3 +20,5 @@ Route::put('properties/{property_id}/property-analytics', 'PropertyController@ad
     ->name('api.add-update-property-analytic');
 Route::get('properties/{property_id}/property-analytics', 'PropertyController@getPropertyAnalytics')
     ->name('api.add-update-property-analytic');
+Route::get('properties/property-analytics', 'PropertyController@getSummaryOfPropertyAnalytics')
+    ->name('api.get-summary-of-property-analytic');
